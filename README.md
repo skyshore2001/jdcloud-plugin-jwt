@@ -62,6 +62,16 @@ login接口生成jwt token: 在login插件的扩展接口(php/class/LoginImp.php
 
 安装插件后，jwt认证方式注册的代码（ConfBase::$authHandlers["jwt"]）添加在plugin/index.php中。
 
+server/php/class/JWT.php中包含加解密算法设置。目前默认使用RS256（非对称加密-hmac）算法，其密钥位于server/php/key/下，jwt.key为私钥，jwt.pub为公钥。
+对于生成jwt的服务，两个文件都要有；对于只用于验证jwt的服务，只须要来公钥文件即可。
+
+生成密钥对参考命令：
+
+	# 生成私钥
+	openssl genrsa 1024 > jwt.key
+	# 从私钥中导出公钥
+	openssl rsa < jwt.key -pubout > jwt.pub
+
 ### 前端实现
 
 首先，在登录后应自动记录token到localStorage或sessionStorage。
